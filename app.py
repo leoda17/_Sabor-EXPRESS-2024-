@@ -30,68 +30,65 @@ def mostra_escolhas():
     print("4. Sair")
 
 def escolhe_opcao():
-    
+
     def exibir_subtitulo(texto):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system("cls" if os.name == "nt" else "clear")
         print(texto)
-        print('')
+        print(" ")
 
     def retorna_menu():
-        input('Digite uma tecla para voltar ao menu principal')
+        input("Digite uma tecla para voltar ao menu principal ")
         main()
 
-    def cadastra_tenis():
-        exibir_subtitulo('Cadastrar tênis')
-
-        nome_tenis = input('Digite o nome do tênis:')
-        tamanho_tenis = int(input('Digite o tamanho do tênis:'))
-        cor_tenis = input('Digite a cor do tênis:')
-        dados_do_tenis = {'nome': nome_tenis, 'tamanho': tamanho_tenis, 'cor': cor_tenis, 'ativo': True}
-        tenis.append(dados_do_tenis)
-        print(f'O tênis {nome_tenis} foi cadastrado com sucesso\n')
-
+    def cadastrar_tenis():
+        exibir_subtitulo("Cadastrar tênis")
+        nome_tenis = input("Digite o nome do tênis que deseja cadastrar: ")
+        tamanho_tenis = int(input("Digite o tamanho do tênis: "))
+        cor_tenis = input("Digite a cor do tênis: ")
+        ativo = input("O tênis está ativo? (s/n): ").strip().lower() == 's'
+        tenis.append({"nome": nome_tenis, "tamanho": tamanho_tenis, "cor": cor_tenis, "ativo": ativo})
+        print(f"O tênis {nome_tenis} foi cadastrado com sucesso\n")
         retorna_menu()
 
     def listar_tenis():
-        exibir_subtitulo('Lista de tênis cadastrados')
+        exibir_subtitulo("Lista de tênis cadastrados")
         for t in tenis:
-            nome_tenis = t['nome']
-            tamanho_tenis = t['tamanho']
-            cor_tenis = t['cor']
-            ativo = 'Ativo' if t['ativo'] else 'Desativado'
-            print(f' - {nome_tenis.ljust(20)} | {str(tamanho_tenis).ljust(6)} | {cor_tenis.ljust(15)} | {ativo}')
+            nome_tenis = t["nome"]
+            tamanho_tenis = t["tamanho"]
+            cor_tenis = t["cor"]
+            ativo = "Ativo" if t["ativo"] else "Desativado"
+            print(f" - {nome_tenis.ljust(20)} | {str(tamanho_tenis).ljust(6)} | {cor_tenis.ljust(15)} | {ativo}")
         retorna_menu()
 
     def ativar_tenis():
-        exibir_subtitulo('Ativar/Desativar tênis')
-        nome_tenis = input('Digite o nome do tênis que deseja ativar/desativar:')
-        tenis_encontrado = False
-
+        exibir_subtitulo("Ativar/Desativar tênis")
+        nome_tenis = input("Digite o nome do tênis que deseja ativar/desativar: ")
+        encontrado = False
         for t in tenis:
-            if nome_tenis == t['nome']:
-                tenis_encontrado = True
-                t['ativo'] = not t['ativo']
-                mensagem = f'O tênis {nome_tenis} foi ativado com sucesso' if t['ativo'] else f'O tênis {nome_tenis} foi desativado'
-                print(mensagem)
+            if t["nome"].lower() == nome_tenis.lower():
+                t["ativo"] = not t["ativo"]
+                status = "ativado" if t["ativo"] else "desativado"
+                print(f"O tênis {nome_tenis} foi {status} com sucesso.")
+                encontrado = True
                 break
-        if not tenis_encontrado:
-            print('Tênis não encontrado')
+        if not encontrado:
+            print(f"O tênis {nome_tenis} não foi encontrado.")
         retorna_menu()
 
     def finalizar_programa():
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('Finalizando o programa\n')
+        os.system("cls" if os.name == "nt" else "clear")
+        print("Finalizando o programa\n")
 
     def opcao_invalida():
-        print('Essa opção não é válida\n')
-        input('Aperte qualquer tecla para voltar')
+        print("Essa opção não é válida")
+        input("Aperte qualquer tecla para voltar")
         main()
 
     try:
         opcao_escolhida = int(input("Escolha uma opção: "))
 
         if opcao_escolhida == 1:
-            cadastra_tenis()
+            cadastrar_tenis()
         elif opcao_escolhida == 2:
             listar_tenis()
         elif opcao_escolhida == 3:
@@ -108,5 +105,5 @@ def main():
     mostra_escolhas()
     escolhe_opcao()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
