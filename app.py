@@ -8,7 +8,6 @@ tenis = [
 
 def exibir_nome_do_programa():
     print("""
-
 ██████╗░░█████╗░░██████╗██╗░░██╗███████╗████████╗██████╗░░█████╗░██╗░░░░░██╗░░░░░
 ██╔══██╗██╔══██╗██╔════╝██║░██╔╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗██║░░░░░██║░░░░░
 ██████╦╝███████║╚█████╗░█████═╝░█████╗░░░░░██║░░░██████╦╝███████║██║░░░░░██║░░░░░
@@ -23,88 +22,80 @@ def exibir_nome_do_programa():
 ██║░╚██╗██║╚█████╔╝██║░╚██╗███████╗
 ╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚══════╝
 """)
-    
+
 def mostra_escolhas():
-    print("1. Cadastrar Novo Tênis")
-    print("2. Listar Tênis Disponíveis")
-    print("3. Ativar/Desativar Tênis")
+    print("1. Cadastrar tênis")
+    print("2. Listar tênis")
+    print("3. Ativar/Desativar tênis")
     print("4. Sair")
 
 def escolhe_opcao():
+    
     def exibir_subtitulo(texto):
-        os.system("cls" if os.name == 'nt' else 'clear')
-        linha = "_" * 65
-        print(linha)
+        os.system('cls' if os.name == 'nt' else 'clear')
         print(texto)
-        print(linha)
-        print(" ")
+        print('')
 
     def retorna_menu():
-        input("Digite uma tecla para voltar ao menu principal ")
+        input('Digite uma tecla para voltar ao menu principal')
         main()
 
-    def cadastrar_tenis():
-        exibir_subtitulo("Cadastrar Novo Tênis")
+    def cadastra_tenis():
+        exibir_subtitulo('Cadastrar tênis')
 
-        nome_tenis = input("Digite o nome do tênis: ")
-        try:
-            tamanho = int(input("Digite o tamanho do tênis: "))
-        except ValueError:
-            print("Tamanho inválido. Deve ser um número inteiro.")
-            retorna_menu()
-            return
-        cor = input("Digite a cor do tênis: ")
-        ativo = input("O tênis está ativo? (Sim/Não): ").strip().lower() == 'sim'
-        tenis.append({"nome": nome_tenis, "tamanho": tamanho, "cor": cor, "ativo": ativo})
-        print(f"O tênis {nome_tenis} foi cadastrado com sucesso\n")
+        nome_tenis = input('Digite o nome do tênis:')
+        tamanho_tenis = int(input('Digite o tamanho do tênis:'))
+        cor_tenis = input('Digite a cor do tênis:')
+        dados_do_tenis = {'nome': nome_tenis, 'tamanho': tamanho_tenis, 'cor': cor_tenis, 'ativo': True}
+        tenis.append(dados_do_tenis)
+        print(f'O tênis {nome_tenis} foi cadastrado com sucesso\n')
+
         retorna_menu()
 
     def listar_tenis():
-        exibir_subtitulo("Lista de Tênis Disponíveis")
-        if tenis:
-            for i, tenis_item in enumerate(tenis, start=1):
-                status = "Ativo" if tenis_item["ativo"] else "Inativo"
-                print(f"{i}. Nome: {tenis_item['nome']} | Tamanho: {tenis_item['tamanho']} | Cor: {tenis_item['cor']} | Status: {status}")
-        else:
-            print("Nenhum tênis cadastrado.")
+        exibir_subtitulo('Lista de tênis cadastrados')
+        for t in tenis:
+            nome_tenis = t['nome']
+            tamanho_tenis = t['tamanho']
+            cor_tenis = t['cor']
+            ativo = 'Ativo' if t['ativo'] else 'Desativado'
+            print(f' - {nome_tenis.ljust(20)} | {str(tamanho_tenis).ljust(6)} | {cor_tenis.ljust(15)} | {ativo}')
         retorna_menu()
 
-    def ativar_desativar_tenis():
-        exibir_subtitulo("Ativar/Desativar Tênis")
-        listar_tenis()
-        if tenis:
-            try:
-                escolha = int(input("Digite o número do tênis para ativar/desativar: "))
-                if 1 <= escolha <= len(tenis):
-                    tenis_item = tenis[escolha - 1]
-                    tenis_item["ativo"] = not tenis_item["ativo"]
-                    status = "Ativo" if tenis_item["ativo"] else "Inativo"
-                    print(f"O tênis {tenis_item['nome']} agora está {status}.")
-                else:
-                    print("Número inválido. Por favor, escolha um número da lista.")
-            except ValueError:
-                print("Entrada inválida. Por favor, insira um número válido.")
+    def ativar_tenis():
+        exibir_subtitulo('Ativar/Desativar tênis')
+        nome_tenis = input('Digite o nome do tênis que deseja ativar/desativar:')
+        tenis_encontrado = False
+
+        for t in tenis:
+            if nome_tenis == t['nome']:
+                tenis_encontrado = True
+                t['ativo'] = not t['ativo']
+                mensagem = f'O tênis {nome_tenis} foi ativado com sucesso' if t['ativo'] else f'O tênis {nome_tenis} foi desativado'
+                print(mensagem)
+                break
+        if not tenis_encontrado:
+            print('Tênis não encontrado')
         retorna_menu()
 
     def finalizar_programa():
-        os.system("cls" if os.name == 'nt' else 'clear')
-        print("Finalizando o programa\n")
-        exit()
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('Finalizando o programa\n')
 
     def opcao_invalida():
-        print("Opção inválida!")
-        input("Aperte qualquer tecla para voltar")
+        print('Essa opção não é válida\n')
+        input('Aperte qualquer tecla para voltar')
         main()
 
     try:
         opcao_escolhida = int(input("Escolha uma opção: "))
 
         if opcao_escolhida == 1:
-            cadastrar_tenis()
+            cadastra_tenis()
         elif opcao_escolhida == 2:
             listar_tenis()
         elif opcao_escolhida == 3:
-            ativar_desativar_tenis()
+            ativar_tenis()
         elif opcao_escolhida == 4:
             finalizar_programa()
         else:
@@ -114,9 +105,8 @@ def escolhe_opcao():
 
 def main():
     exibir_nome_do_programa()
-    while True:
-        mostra_escolhas()
-        escolhe_opcao()
+    mostra_escolhas()
+    escolhe_opcao()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
